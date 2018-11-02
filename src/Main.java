@@ -98,7 +98,6 @@ public class Main {
                         continue;
                 terminal.setCursorPosition(room.getX(), room.getY());
                 terminal.putCharacter(room.getSymbol());
-
             }
             for (int i = 0; i < room.getHeight(); i++) {
 
