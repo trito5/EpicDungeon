@@ -23,26 +23,69 @@ public class Main {
 
     private static void startGame() throws IOException, InterruptedException {
         Terminal terminal = createTerminal();
-        Player player = new Player(10, 17, '\u263a');
-        List<Brick> dungeon = createDungeon();
-        dungeon = createDoors(dungeon);
-        //List<Door> doors = createDoors(dungeon);
+        Player player = new Player(6, 17, '\u263a');
+        Dungeon dungeonOne = new Dungeon();
+        List<Brick> walls = createDungeon();
+        List<Bomb> bombs = createBombs();
 
-        drawCharacters(terminal, player, dungeon);
+        createDoors(walls);
+
+        dungeonOne.setWalls(walls);
+        dungeonOne.setBombs(bombs);
+
+        drawCharacters(terminal, player, dungeonOne);
 
         do {
             KeyStroke keyStroke = getUserKeyStroke(terminal);
 
-            movePlayer(player, keyStroke, dungeon);
+            movePlayer(player, keyStroke, walls);
 
 
-            drawCharacters(terminal, player, dungeon);
-            //drawRoom();
+            drawCharacters(terminal, player, dungeonOne);
 
-        } while (true);
 
+
+        } while (!isPlayerDead(player, dungeonOne));
+        drawGameOver(terminal);
     }
-    private static List<Brick> createDoors(List<Brick> dungeon){
+
+    private static List<Bomb> createBombs(){
+        List<Bomb> bombs = new ArrayList<>();
+        bombs.add(new Bomb(13,16));
+        bombs.add(new Bomb(13,17));
+        bombs.add(new Bomb(13,18));
+
+        bombs.add(new Bomb(14,18));
+
+        bombs.add(new Bomb(14,18));
+        bombs.add(new Bomb(14,19));
+        bombs.add(new Bomb(16,18));
+        bombs.add(new Bomb(16,17));
+        bombs.add(new Bomb(16,16));
+        bombs.add(new Bomb(16,15));
+        bombs.add(new Bomb(17,18));
+        bombs.add(new Bomb(18,18));
+        bombs.add(new Bomb(19,18));
+        bombs.add(new Bomb(20,18));
+        bombs.add(new Bomb(19,16));
+        bombs.add(new Bomb(20,16));
+        bombs.add(new Bomb(21,16));
+        bombs.add(new Bomb(22,16));
+        bombs.add(new Bomb(23,19));
+        bombs.add(new Bomb(23,18));
+        bombs.add(new Bomb(23,17));
+        bombs.add(new Bomb(23,16));
+        bombs.add(new Bomb(26,15));
+        bombs.add(new Bomb(26,16));
+        bombs.add(new Bomb(26,17));
+        bombs.add(new Bomb(26,18));
+        bombs.add(new Bomb(29,18));
+
+
+        return bombs;
+    }
+
+    private static void createDoors(List<Brick> dungeon){
 
         for (int i = 0; i < dungeon.size(); i++) {
             if (dungeon.get(i).getX() == 70 && dungeon.get(i).getY() == 14){
@@ -57,13 +100,12 @@ public class Main {
             if (dungeon.get(i).getX() == 70 && dungeon.get(i).getY() == 14)
                 dungeon.remove(dungeon.get(i));
         }*/
-        return dungeon;
+
     }
 
     private static List<Brick> createDungeon() {
         List<Brick> wallList = new ArrayList<>();
-       // Room room = new Room(RoomType.FOURWAY, 1, 20);
-        //roomList.add(room);
+
         for (int i = 2; i < 77; i++) {
             wallList.add(new Brick(i,20));
             wallList.add(new Brick(i, 14));
@@ -75,6 +117,17 @@ public class Main {
             wallList.add(new Brick(2, i));
             wallList.add(new Brick(76, i));
         }
+
+        wallList.add(new Brick(10, 19));
+        wallList.add(new Brick(10, 18));
+        wallList.add(new Brick(10,16));
+        wallList.add(new Brick(10,15));
+
+        wallList.add(new Brick(30, 19));
+        wallList.add(new Brick(30, 18));
+        wallList.add(new Brick(30,16));
+        wallList.add(new Brick(30,15));
+
 
 
         return wallList;
@@ -131,7 +184,7 @@ public class Main {
         return terminal;
     }
 
-    private static void drawCharacters(Terminal terminal, Player player, List<Brick> walls) throws IOException {
+    private static void drawCharacters(Terminal terminal, Player player, Dungeon dungeon) throws IOException {
 
         terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
@@ -139,12 +192,48 @@ public class Main {
         terminal.setCursorPosition(player.getX(), player.getY());
         terminal.putCharacter(player.getSymbol());
 
-        for (Brick brick : walls) {
+        for (Brick brick : dungeon.getWalls()) {
             terminal.setCursorPosition(brick.getX(),brick.getY());
             terminal.putCharacter(brick.getSymbol());
         }
 
+        for (Bomb bomb : dungeon.getBombs()){
+            terminal.setCursorPosition(bomb.getX(), bomb.getY());
+            terminal.putCharacter(bomb.getSymbol());
+        }
+
         terminal.flush();
+    }
+
+    private static boolean isPlayerDead(Player player, Dungeon dungeon){
+        for (Bomb bomb : dungeon.getBombs()) {
+            if (player.getX() == bomb.getX() && player.getY() == bomb.getY()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void drawGameOver(Terminal terminal) throws IOException{
+        terminal.clearScreen();
+        terminal.setCursorPosition(30,10);
+        terminal.putCharacter('G');
+        terminal.setCursorPosition(31,10);
+        terminal.putCharacter('A');
+        terminal.setCursorPosition(32,10);
+        terminal.putCharacter('M');
+        terminal.setCursorPosition(33,10);
+        terminal.putCharacter('E');
+        terminal.setCursorPosition(35,10);
+        terminal.putCharacter('O');
+        terminal.setCursorPosition(36,10);
+        terminal.putCharacter('V');
+        terminal.setCursorPosition(37,10);
+        terminal.putCharacter('E');
+        terminal.setCursorPosition(38,10);
+        terminal.putCharacter('R');
+        terminal.flush();
+
     }
 
 

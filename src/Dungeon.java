@@ -3,7 +3,16 @@ import java.util.List;
 
 public class Dungeon {
     private List<Brick> walls = new ArrayList<>();
+    private List<Bomb> bombs = new ArrayList<>();
     private String name;
+
+    public List<Bomb> getBombs() {
+        return bombs;
+    }
+
+    public void setBombs(List<Bomb> bombs) {
+        this.bombs = bombs;
+    }
 
     public List<Brick> getWalls() {
         return walls;
