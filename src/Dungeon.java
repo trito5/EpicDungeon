@@ -4,7 +4,34 @@ import java.util.List;
 public class Dungeon {
     private List<Brick> walls = new ArrayList<>();
     private List<Bomb> bombs = new ArrayList<>();
+    private List<MovingWallNode> movingWall = new ArrayList<>();
+    private List<RandomMob> randomMobs = new ArrayList<>();
+    private List<BlinkingBomb> blinkingBombs = new ArrayList<>();
     private String name;
+
+    public List<BlinkingBomb> getBlinkingBombs() {
+        return blinkingBombs;
+    }
+
+    public void setBlinkingBombs(List<BlinkingBomb> blinkingBombs) {
+        this.blinkingBombs = blinkingBombs;
+    }
+
+    public List<MovingWallNode> getMovingWall() {
+        return movingWall;
+    }
+
+    public List<RandomMob> getRandomMobs() {
+        return randomMobs;
+    }
+
+    public void setRandomMobs(List<RandomMob> randomMobs) {
+        this.randomMobs = randomMobs;
+    }
+
+    public void setMovingWall(List<MovingWallNode> movingWall) {
+        this.movingWall = movingWall;
+    }
 
     public List<Bomb> getBombs() {
         return bombs;

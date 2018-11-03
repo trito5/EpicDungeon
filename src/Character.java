@@ -1,24 +1,26 @@
-public class Player extends Character {
+public abstract class Character {
 
-    public Player(int x, int y, char symbol){
-        super(x, y, symbol);
 
-    }
-}
-
-/*public class Player {
     private int x;
     private int y;
     private char symbol;
     private int previousX;
     private int previousY;
 
-    public Player(int x, int y, char symbol) {
+    public Character(int x, int y, char symbol) {
         this.x = x;
         this.y = y;
         this.symbol = symbol;
         this.previousX = x;
         this.previousY = y;
+    }
+
+    public void setPreviousX(int previousX) {
+        this.previousX = previousX;
+    }
+
+    public void setPreviousY(int previousY) {
+        this.previousY = previousY;
     }
 
     public int getX() {
@@ -41,25 +43,25 @@ public class Player extends Character {
         return previousY;
     }
 
-    public void moveUp(){
+    public void moveUp() {
         previousX = x;
         previousY = y;
         y--;
     }
 
-    public void moveDown(){
+    public void moveDown() {
         previousX = x;
         previousY = y;
         y++;
     }
 
-    public void moveLeft(){
+    public void moveLeft() {
         previousX = x;
         previousY = y;
         x--;
     }
 
-    public void moveRight(){
+    public void moveRight() {
         previousX = x;
         previousY = y;
         x++;
@@ -76,4 +78,5 @@ public class Player extends Character {
                 ", previousY=" + previousY +
                 '}';
     }
-}*/
+}
+
