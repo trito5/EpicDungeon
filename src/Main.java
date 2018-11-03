@@ -23,15 +23,17 @@ public class Main {
 
     private static void startGame() throws IOException, InterruptedException {
         Terminal terminal = createTerminal();
-        Player player = new Player(10, 10, '\u263a');
-        List<Room> dungeon = createDungeon();
+        Player player = new Player(10, 17, '\u263a');
+        List<Brick> dungeon = createDungeon();
+        dungeon = createDoors(dungeon);
+        //List<Door> doors = createDoors(dungeon);
 
         drawCharacters(terminal, player, dungeon);
 
         do {
             KeyStroke keyStroke = getUserKeyStroke(terminal);
 
-            movePlayer(player, keyStroke);
+            movePlayer(player, keyStroke, dungeon);
 
 
             drawCharacters(terminal, player, dungeon);
@@ -40,27 +42,75 @@ public class Main {
         } while (true);
 
     }
+    private static List<Brick> createDoors(List<Brick> dungeon){
 
-    private static List<Room> createDungeon() {
-        List<Room> roomList = new ArrayList<>();
-        Room room = new Room(RoomType.FOURWAY, 1, 20);
-        roomList.add(room);
-        return roomList;
+        for (int i = 0; i < dungeon.size(); i++) {
+            if (dungeon.get(i).getX() == 70 && dungeon.get(i).getY() == 14){
+                dungeon.remove(dungeon.get(i));
+            }
+            if (dungeon.get(i).getX() == 9 && dungeon.get(i).getY() == 8){
+                dungeon.remove(dungeon.get(i));
+            }
+        }
+        /*doorList.add(new Door(70,8));
+        for (int i = 0; i < dungeon.size(); i++) {
+            if (dungeon.get(i).getX() == 70 && dungeon.get(i).getY() == 14)
+                dungeon.remove(dungeon.get(i));
+        }*/
+        return dungeon;
     }
 
-    private static void movePlayer(Player player, KeyStroke keyStroke) {
+    private static List<Brick> createDungeon() {
+        List<Brick> wallList = new ArrayList<>();
+       // Room room = new Room(RoomType.FOURWAY, 1, 20);
+        //roomList.add(room);
+        for (int i = 2; i < 77; i++) {
+            wallList.add(new Brick(i,20));
+            wallList.add(new Brick(i, 14));
+            wallList.add(new Brick(i,8));
+            wallList.add(new Brick(i,2));
+        }
+
+        for (int i = 2; i <= 20; i++){
+            wallList.add(new Brick(2, i));
+            wallList.add(new Brick(76, i));
+        }
+
+
+        return wallList;
+
+    }
+
+    private static boolean isWallInTheWay(int x, int y, List<Brick> dungeon) {
+        for (Brick brick : dungeon) {
+            if (x == brick.getX() && y == brick.getY()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void movePlayer(Player player, KeyStroke keyStroke, List<Brick> dungeon) {
         switch (keyStroke.getKeyType()) {
             case ArrowUp:
-                player.moveUp();
+                if (!isWallInTheWay(player.getX(), player.getY() - 1, dungeon)) {
+                    player.moveUp();
+                }
                 break;
             case ArrowDown:
-                player.moveDown();
+                if (!isWallInTheWay(player.getX(), player.getY() + 1, dungeon)) {
+                    player.moveDown();
+                }
                 break;
             case ArrowLeft:
-                player.moveLeft();
+                if (!isWallInTheWay(player.getX()-1, player.getY(), dungeon)) {
+                    player.moveLeft();
+                }
                 break;
             case ArrowRight:
-                player.moveRight();
+                if (!isWallInTheWay(player.getX()+1, player.getY(), dungeon)) {
+                    player.moveRight();
+                }
                 break;
         }
     }
@@ -81,7 +131,7 @@ public class Main {
         return terminal;
     }
 
-    private static void drawCharacters(Terminal terminal, Player player, List<Room> roomList) throws IOException {
+    private static void drawCharacters(Terminal terminal, Player player, List<Brick> walls) throws IOException {
 
         terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
@@ -89,48 +139,11 @@ public class Main {
         terminal.setCursorPosition(player.getX(), player.getY());
         terminal.putCharacter(player.getSymbol());
 
-        for (Room room : roomList) {
-
-            for (int i = 0; i < room.getWidth(); i++) {
-                room.setX(room.getX() + 1);
-                if (room.getRoomType() == RoomType.VERTICAL_CORRIDOR || room.getRoomType() == RoomType.FOURWAY)
-                    if (i == 9)
-                        continue;
-                terminal.setCursorPosition(room.getX(), room.getY());
-                terminal.putCharacter(room.getSymbol());
-            }
-            for (int i = 0; i < room.getHeight(); i++) {
-
-                room.setY(room.getY() - 1);
-                if (room.getRoomType() == RoomType.HORISONTAL_CORRIDOR || room.getRoomType() == RoomType.START ||
-                                         room.getRoomType() == RoomType.FOURWAY)
-                    if (i == 3)
-                        continue;
-                terminal.setCursorPosition(room.getX(), room.getY());
-                terminal.putCharacter(room.getSymbol());
-            }
-
-            for (int i = 0; i < room.getWidth() - 1; i++) {
-                room.setX(room.getX() - 1);
-                if (room.getRoomType() == RoomType.VERTICAL_CORRIDOR || room.getRoomType() == RoomType.FOURWAY)
-                    if (i == 8)
-                        continue;
-                terminal.setCursorPosition(room.getX(), room.getY());
-                terminal.putCharacter(room.getSymbol());
-            }
-
-            for (int i = 0; i < room.getHeight() - 1; i++) {
-                room.setY(room.getY() + 1);
-                if (room.getRoomType() == RoomType.HORISONTAL_CORRIDOR || room.getRoomType() == RoomType.START ||
-                        room.getRoomType() == RoomType.FOURWAY)
-                    if (i == 3)
-                        continue;
-                terminal.setCursorPosition(room.getX(), room.getY());
-                terminal.putCharacter(room.getSymbol());
-            }
-
-
+        for (Brick brick : walls) {
+            terminal.setCursorPosition(brick.getX(),brick.getY());
+            terminal.putCharacter(brick.getSymbol());
         }
+
         terminal.flush();
     }
 
