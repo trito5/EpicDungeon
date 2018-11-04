@@ -25,7 +25,7 @@ public class Main {
     private static void startGame() throws IOException, InterruptedException {
         Terminal terminal = createTerminal();
         //Player player = new Player(6, 17, '\u263a');
-        Player player = new Player(71, 11, '\u263a');
+        Player player = new Player(9, 9, '\u263a');
         Dungeon dungeonOne = new Dungeon();
         List<Brick> walls = createDungeon();
         List<Bomb> bombs = createBombs();
@@ -86,6 +86,14 @@ public class Main {
         list.add(new BlinkingBomb(75, 13));
         list.add(new BlinkingBomb(74, 11));
         list.add(new BlinkingBomb(75, 9));
+
+        list.add(new BlinkingBomb(10,5));
+        list.add(new BlinkingBomb(8,5));
+        list.add(new BlinkingBomb(6,3));
+        list.add(new BlinkingBomb(8,3));
+        list.add(new BlinkingBomb(10,3));
+        list.add(new BlinkingBomb(12,3));
+
         return list;
     }
 
@@ -121,6 +129,29 @@ public class Main {
         bombs.add(new Bomb(26, 17));
         bombs.add(new Bomb(26, 18)); 
         bombs.add(new Bomb(29, 18));
+
+        //bombs.add(new Bomb(12,6));
+        bombs.add(new Bomb(11,6));
+        bombs.add(new Bomb(10,6));
+        bombs.add(new Bomb(9,6));
+        bombs.add(new Bomb(8,6));
+        bombs.add(new Bomb(8,7));
+
+       // bombs.add(new Bomb(6,6));
+        bombs.add(new Bomb(5,6));
+        bombs.add(new Bomb(5,5));
+        bombs.add(new Bomb(5,4));
+
+        bombs.add(new Bomb(6,4));
+        bombs.add(new Bomb(7,4));
+        bombs.add(new Bomb(8,4));
+        bombs.add(new Bomb(9,4));
+        bombs.add(new Bomb(10,4));
+        bombs.add(new Bomb(11,4));
+        bombs.add(new Bomb(12,4));
+        bombs.add(new Bomb(13,4));
+
+
 
         return bombs;
     }
@@ -231,10 +262,15 @@ public class Main {
         wallList.add(new Brick(10, 10));
         wallList.add(new Brick(10, 9));
 
-        wallList.add(new Brick(14, 7));
-        wallList.add(new Brick(14, 6));
         wallList.add(new Brick(14, 4));
-        wallList.add(new Brick(14, 3));
+        wallList.add(new Brick(14, 5));
+        wallList.add(new Brick(14, 6));
+        wallList.add(new Brick(14, 7));
+
+        wallList.add(new Brick(40, 3));
+        wallList.add(new Brick(40, 4));
+        wallList.add(new Brick(40, 6));
+        wallList.add(new Brick(40, 7));
 
 
 
