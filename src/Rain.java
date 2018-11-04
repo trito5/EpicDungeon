@@ -18,17 +18,7 @@ public class Rain extends MovingNodeXY {
 
     @Override
     public void moveDown() {
-       /* if (getCounter() < this.getStopValueY()) {
-            setPreviousX(getX());
-            setPreviousY(getY());
-            setY(getY() + 1);
-            setCounter(getCounter() + 1);
-        } else {
-            setCounter(0);
-            setPreviousY(getY());
-            setY(getStartValueY());
 
-        }*/
        if (this.getY() == getStopValueY()){
            setY(getStartValueY());
            setPreviousY(getStopValueY());
