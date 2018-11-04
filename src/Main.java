@@ -25,7 +25,7 @@ public class Main {
     private static void startGame() throws IOException, InterruptedException {
         Terminal terminal = createTerminal();
         //Player player = new Player(6, 17, '\u263a');
-        Player player = new Player(9, 9, '\u263a');
+        Player player = new Player(9, 3, '\u263a');
         Dungeon dungeonOne = new Dungeon();
         List<Brick> walls = createDungeon();
         List<Bomb> bombs = createBombs();
@@ -33,6 +33,7 @@ public class Main {
         List<RandomMob> randomMobs = createRandomMobs();
         List<MovingWallNode> movingWall1 = createMovingWall();
         List<Rain> rainList = createRain();
+        List<MovingWallHole> wallHoles = createWallHole();
 
         createDoors(walls);
 
@@ -42,6 +43,7 @@ public class Main {
         dungeonOne.setRandomMobs(randomMobs);
         dungeonOne.setBlinkingBombs(blinkingBombs);
         dungeonOne.setRainList(rainList);
+        dungeonOne.setMovingWallHole(wallHoles);
 
         drawCharacters(terminal, player, dungeonOne);
 
@@ -50,8 +52,6 @@ public class Main {
 
             movePlayer(player, keyStroke, walls);
             moveObjects(dungeonOne);
-
-
             drawCharacters(terminal, player, dungeonOne);
 
 
@@ -212,6 +212,35 @@ public class Main {
         return rainList;
     }
 
+    private static List<MovingWallHole> createWallHole(){
+        List<MovingWallHole> wallHoles = new ArrayList<>();
+        wallHoles.add(new MovingWallHole(39,3));
+        wallHoles.add(new MovingWallHole(39,4));
+        wallHoles.add(new MovingWallHole(39,6));
+        wallHoles.add(new MovingWallHole(39,7));
+
+        wallHoles.add(new MovingWallHole(35,4));
+        wallHoles.add(new MovingWallHole(35,5));
+        wallHoles.add(new MovingWallHole(35,6));
+        wallHoles.add(new MovingWallHole(35,7));
+
+        wallHoles.add(new MovingWallHole(30,3));
+        wallHoles.add(new MovingWallHole(30,5));
+        wallHoles.add(new MovingWallHole(30,6));
+        wallHoles.add(new MovingWallHole(30,7));
+
+        wallHoles.add(new MovingWallHole(25,3));
+        wallHoles.add(new MovingWallHole(25,4));
+        wallHoles.add(new MovingWallHole(25,5));
+        wallHoles.add(new MovingWallHole(25,6));
+
+        wallHoles.add(new MovingWallHole(19,3));
+        wallHoles.add(new MovingWallHole(19,5));
+        wallHoles.add(new MovingWallHole(19,6));
+        wallHoles.add(new MovingWallHole(19,7));
+        return wallHoles;
+    }
+
     private static List<Brick> createDungeon() {
         List<Brick> wallList = new ArrayList<>();
 
@@ -320,6 +349,10 @@ public class Main {
         for (Rain rain : dungeon.getRainList()) {
             rain.moveDown();
 
+        }
+
+        for (MovingWallHole mvh : dungeon.getMovingWallHole()){
+            mvh.moveLeft();
         }
     }
 
@@ -452,6 +485,18 @@ public class Main {
             terminal.putCharacter(rain.getSymbol());
         }
 
+        for (MovingWallHole mvh : dungeon.getMovingWallHole()) {
+            if (mvh.getPreviousX() == player.getX() && mvh.getPreviousY() == player.getY()) {
+
+            } else {
+                terminal.setCursorPosition(mvh.getPreviousX(), mvh.getPreviousY());
+                terminal.putCharacter(' ');
+            }
+
+            terminal.setCursorPosition(mvh.getX(), mvh.getY());
+            terminal.putCharacter(mvh.getSymbol());
+        }
+
 
         terminal.flush();
     }
@@ -481,9 +526,14 @@ public class Main {
             }
         }
 
-
         for (Rain rain : dungeon.getRainList()){
             if (player.getX() == rain.getX() && player.getY() == rain.getY()) {
+                return true;
+            }
+        }
+
+        for (MovingWallHole mvh : dungeon.getMovingWallHole()){
+            if (player.getX() == mvh.getX() && player.getY() == mvh.getY()) {
                 return true;
             }
         }

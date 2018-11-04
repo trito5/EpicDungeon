@@ -3,8 +3,8 @@ public class MovingWallHole extends MovingNodeXY {
     public MovingWallHole(int x, int y){
         super(x, y);
         setSymbol('\u2620');
-        setStartValueX(13);
-        setStopValueX(39);
+        setStartValueX(39);
+        setStopValueX(16);
         setPreviousY(getY());
     }
 
@@ -16,7 +16,7 @@ public class MovingWallHole extends MovingNodeXY {
             setPreviousX(getStopValueX());
         } else {
             setPreviousX(getX());
-            setX(getX() + 1);
+            setX(getX() - 1);
         }
     }
 }

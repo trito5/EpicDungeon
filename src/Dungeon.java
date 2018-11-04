@@ -8,14 +8,14 @@ public class Dungeon {
     private List<RandomMob> randomMobs = new ArrayList<>();
     private List<BlinkingBomb> blinkingBombs = new ArrayList<>();
     private List<Rain> rainList = new ArrayList<>();
-    private List<MovingWallNode> movingWallHole = new ArrayList<>();
+    private List<MovingWallHole> movingWallHole = new ArrayList<>();
     private String name;
 
-    public List<MovingWallNode> getMovingWallHole() {
+    public List<MovingWallHole> getMovingWallHole() {
         return movingWallHole;
     }
 
-    public void setMovingWallHole(List<MovingWallNode> movingWallHole) {
+    public void setMovingWallHole(List<MovingWallHole> movingWallHole) {
         this.movingWallHole = movingWallHole;
     }
 
