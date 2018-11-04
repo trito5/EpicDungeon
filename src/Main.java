@@ -119,7 +119,7 @@ public class Main {
         bombs.add(new Bomb(26, 15));
         bombs.add(new Bomb(26, 16));
         bombs.add(new Bomb(26, 17));
-        bombs.add(new Bomb(26, 18));
+        bombs.add(new Bomb(26, 18)); 
         bombs.add(new Bomb(29, 18));
 
 
