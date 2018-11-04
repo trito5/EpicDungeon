@@ -1,8 +1,8 @@
 public class MovingNodeXY extends NodeXY{
     private int previousX;
     private int previousY;
-    private final int startValueX;
-    private final int startValueY;
+    private  int startValueX;
+    private  int startValueY;
     private int counter = 0;
     private int stopValueX;
     private int stopValueY;
@@ -21,12 +21,12 @@ public class MovingNodeXY extends NodeXY{
         this.stopValueY = stopValueY;
     }
 
-    public int getStopValueX() {
-        return stopValueX;
+    public void setStartValueX(int startValueX) {
+        this.startValueX = startValueX;
     }
 
-    public void setStopValueX(int stopValueX) {
-        this.stopValueX = stopValueX;
+    public void setStartValueY(int startValueY) {
+        this.startValueY = startValueY;
     }
 
     public int getStopValueY() {
@@ -37,9 +37,20 @@ public class MovingNodeXY extends NodeXY{
         this.stopValueY = stopValueY;
     }
 
+    public int getStopValueX() {
+        return stopValueX;
+    }
+
+    public void setStopValueX(int stopValueX) {
+        this.stopValueX = stopValueX;
+    }
+
+
     public int getStartValueX() {
         return startValueX;
     }
+
+
 
     public int getStartValueY() {
         return startValueY;

@@ -24,13 +24,15 @@ public class Main {
 
     private static void startGame() throws IOException, InterruptedException {
         Terminal terminal = createTerminal();
-        Player player = new Player(6, 17, '\u263a');
+        //Player player = new Player(6, 17, '\u263a');
+        Player player = new Player(71, 11, '\u263a');
         Dungeon dungeonOne = new Dungeon();
         List<Brick> walls = createDungeon();
         List<Bomb> bombs = createBombs();
         List<BlinkingBomb> blinkingBombs = createBlinknigBombs();
         List<RandomMob> randomMobs = createRandomMobs();
         List<MovingWallNode> movingWall1 = createMovingWall();
+        List<Rain> rainList = createRain();
 
         createDoors(walls);
 
@@ -39,6 +41,7 @@ public class Main {
         dungeonOne.setMovingWall(movingWall1);
         dungeonOne.setRandomMobs(randomMobs);
         dungeonOne.setBlinkingBombs(blinkingBombs);
+        dungeonOne.setRainList(rainList);
 
         drawCharacters(terminal, player, dungeonOne);
 
@@ -56,19 +59,33 @@ public class Main {
         drawGameOver(terminal);
     }
 
-    private static List<BlinkingBomb> createBlinknigBombs(){
-        List<BlinkingBomb> list =  new ArrayList<>();
-        list.add(new BlinkingBomb(60, 9));
-        list.add(new BlinkingBomb(52,11));
-        list.add(new BlinkingBomb(55,13));
-        list.add(new BlinkingBomb(70,11));
-        list.add(new BlinkingBomb(69,12));
-        list.add(new BlinkingBomb(68,12));
-        list.add(new BlinkingBomb(68,10));
-        list.add(new BlinkingBomb(67,11));
-        list.add(new BlinkingBomb(70,12));
-        list.add(new BlinkingBomb(56,12));
-        list.add(new BlinkingBomb(68,10));
+    private static List<BlinkingBomb> createBlinknigBombs() {
+        List<BlinkingBomb> list = new ArrayList<>();
+        list.add(new BlinkingBomb(65, 9));
+        list.add(new BlinkingBomb(62, 11));
+        list.add(new BlinkingBomb(65, 13));
+        list.add(new BlinkingBomb(70, 11));
+        list.add(new BlinkingBomb(69, 12));
+        list.add(new BlinkingBomb(68, 12));
+        list.add(new BlinkingBomb(68, 10));
+        list.add(new BlinkingBomb(67, 11));
+        list.add(new BlinkingBomb(70, 12));
+        list.add(new BlinkingBomb(66, 12));
+        list.add(new BlinkingBomb(68, 10));
+        list.add(new BlinkingBomb(65, 13));
+        list.add(new BlinkingBomb(68, 11));
+        list.add(new BlinkingBomb(63, 11));
+        list.add(new BlinkingBomb(70, 10));
+        list.add(new BlinkingBomb(69, 11));
+        list.add(new BlinkingBomb(69, 12));
+        list.add(new BlinkingBomb(76, 12));
+        list.add(new BlinkingBomb(73, 9));
+        list.add(new BlinkingBomb(74, 13));
+        list.add(new BlinkingBomb(76, 10));
+        list.add(new BlinkingBomb(75, 12));
+        list.add(new BlinkingBomb(75, 13));
+        list.add(new BlinkingBomb(74, 11));
+        list.add(new BlinkingBomb(75, 9));
         return list;
     }
 
@@ -112,8 +129,10 @@ public class Main {
     private static List<RandomMob> createRandomMobs() {
         List<RandomMob> list = new ArrayList<>();
         list.add(new RandomMob(60, 17));
-        list.add(new RandomMob(70,19));
+        list.add(new RandomMob(70, 19));
         list.add(new RandomMob(55, 16));
+        list.add(new RandomMob(7,12));
+        list.add(new RandomMob(25,12));
         return list;
     }
 
@@ -147,6 +166,22 @@ public class Main {
 
     }
 
+    private static List<Rain> createRain() {
+        List<Rain> rainList = new ArrayList<>();
+        rainList.add(new Rain(33, 9));
+        rainList.add(new Rain( 36, 11));
+        rainList.add(new Rain(39,12));
+        rainList.add(new Rain(43, 9));
+        rainList.add(new Rain(46, 10));
+        rainList.add(new Rain(50,12));
+        rainList.add(new Rain(53,11));
+        rainList.add(new Rain(57,9));
+        rainList.add(new Rain(59,12));
+
+
+        return rainList;
+    }
+
     private static List<Brick> createDungeon() {
         List<Brick> wallList = new ArrayList<>();
 
@@ -176,6 +211,33 @@ public class Main {
         wallList.add(new Brick(50, 18));
         wallList.add(new Brick(50, 16));
         wallList.add(new Brick(50, 15));
+
+        wallList.add(new Brick(60, 13));
+        wallList.add(new Brick(60, 12));
+        wallList.add(new Brick(60, 10));
+        wallList.add(new Brick(60, 9));
+
+        wallList.add(new Brick(30, 13));
+        wallList.add(new Brick(30, 12));
+        wallList.add(new Brick(30, 10));
+        wallList.add(new Brick(30, 9));
+
+        wallList.add(new Brick(20, 13));
+        wallList.add(new Brick(20, 12));
+        wallList.add(new Brick(20, 11));
+        wallList.add(new Brick(20, 10));
+
+        wallList.add(new Brick(10, 12));
+        wallList.add(new Brick(10, 11));
+        wallList.add(new Brick(10, 10));
+        wallList.add(new Brick(10, 9));
+
+        wallList.add(new Brick(14, 7));
+        wallList.add(new Brick(14, 6));
+        wallList.add(new Brick(14, 4));
+        wallList.add(new Brick(14, 3));
+
+
 
         return wallList;
 
@@ -216,8 +278,13 @@ public class Main {
             }
         }
 
-        for (BlinkingBomb blinkingBomb : dungeon.getBlinkingBombs()){
+        for (BlinkingBomb blinkingBomb : dungeon.getBlinkingBombs()) {
             blinkingBomb.blink();
+        }
+
+        for (Rain rain : dungeon.getRainList()) {
+            rain.moveDown();
+
         }
     }
 
@@ -264,14 +331,41 @@ public class Main {
 
     private static void drawCharacters(Terminal terminal, Player player, Dungeon dungeon) throws IOException {
 
+        terminal.setCursorPosition(30,1);
+        terminal.putCharacter('E');
+        terminal.setCursorPosition(31,1);
+        terminal.putCharacter('P');
+        terminal.setCursorPosition(32,1);
+        terminal.putCharacter('I');
+        terminal.setCursorPosition(33,1);
+        terminal.putCharacter('C');
+        terminal.setCursorPosition(35,1);
+        terminal.putCharacter('D');
+        terminal.setCursorPosition(36,1);
+        terminal.putCharacter('U');
+        terminal.setCursorPosition(37,1);
+        terminal.putCharacter('N');
+        terminal.setCursorPosition(38,1);
+        terminal.putCharacter('G');
+        terminal.setCursorPosition(39,1);
+        terminal.putCharacter('E');
+        terminal.setCursorPosition(40,1);
+        terminal.putCharacter('O');
+        terminal.setCursorPosition(41,1);
+        terminal.putCharacter('N');
+        terminal.setCursorPosition(38,1);
+
+
+
+
         terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
 
         terminal.setCursorPosition(player.getX(), player.getY());
         terminal.putCharacter(player.getSymbol());
 
-        for (BlinkingBomb blinkingBomb : dungeon.getBlinkingBombs()){
-            if (blinkingBomb.isVisible()){
+        for (BlinkingBomb blinkingBomb : dungeon.getBlinkingBombs()) {
+            if (blinkingBomb.isVisible()) {
                 terminal.setCursorPosition(blinkingBomb.getX(), blinkingBomb.getY());
                 terminal.putCharacter(blinkingBomb.getSymbol());
             } else {
@@ -300,7 +394,7 @@ public class Main {
         }
 
         for (RandomMob rm : dungeon.getRandomMobs()) {
-            if (rm.getPreviousX() == player.getX() && rm.getPreviousY() == player.getY()){
+            if (rm.getPreviousX() == player.getX() && rm.getPreviousY() == player.getY()) {
 
             } else {
                 terminal.setCursorPosition(rm.getPreviousX(), rm.getPreviousY());
@@ -311,6 +405,17 @@ public class Main {
             terminal.putCharacter(rm.getSymbol());
         }
 
+        for (Rain rain : dungeon.getRainList()) {
+            if (rain.getPreviousX() == player.getX() && rain.getPreviousY() == player.getY()) {
+
+            } else {
+                terminal.setCursorPosition(rain.getPreviousX(), rain.getPreviousY());
+                terminal.putCharacter(' ');
+            }
+
+            terminal.setCursorPosition(rain.getX(), rain.getY());
+            terminal.putCharacter(rain.getSymbol());
+        }
 
 
         terminal.flush();
@@ -335,8 +440,15 @@ public class Main {
             }
         }
 
-        for (BlinkingBomb blinkingBomb : dungeon.getBlinkingBombs()){
+        for (BlinkingBomb blinkingBomb : dungeon.getBlinkingBombs()) {
             if (player.getX() == blinkingBomb.getX() && player.getY() == blinkingBomb.getY() && blinkingBomb.isVisible()) {
+                return true;
+            }
+        }
+
+
+        for (Rain rain : dungeon.getRainList()){
+            if (player.getX() == rain.getX() && player.getY() == rain.getY()) {
                 return true;
             }
         }
@@ -345,21 +457,21 @@ public class Main {
 
     private static void drawGameOver(Terminal terminal) throws IOException {
         terminal.clearScreen();
-        terminal.setCursorPosition(30, 10);
-        terminal.putCharacter('G');
-        terminal.setCursorPosition(31, 10);
-        terminal.putCharacter('A');
-        terminal.setCursorPosition(32, 10);
-        terminal.putCharacter('M');
         terminal.setCursorPosition(33, 10);
-        terminal.putCharacter('E');
+        terminal.putCharacter('G');
+        terminal.setCursorPosition(34, 10);
+        terminal.putCharacter('A');
         terminal.setCursorPosition(35, 10);
-        terminal.putCharacter('O');
+        terminal.putCharacter('M');
         terminal.setCursorPosition(36, 10);
-        terminal.putCharacter('V');
-        terminal.setCursorPosition(37, 10);
         terminal.putCharacter('E');
         terminal.setCursorPosition(38, 10);
+        terminal.putCharacter('O');
+        terminal.setCursorPosition(39, 10);
+        terminal.putCharacter('V');
+        terminal.setCursorPosition(40, 10);
+        terminal.putCharacter('E');
+        terminal.setCursorPosition(41, 10);
         terminal.putCharacter('R');
         terminal.flush();
 

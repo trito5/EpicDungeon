@@ -7,7 +7,16 @@ public class Dungeon {
     private List<MovingWallNode> movingWall = new ArrayList<>();
     private List<RandomMob> randomMobs = new ArrayList<>();
     private List<BlinkingBomb> blinkingBombs = new ArrayList<>();
+    private List<Rain> rainList = new ArrayList<>();
     private String name;
+
+    public List<Rain> getRainList() {
+        return rainList;
+    }
+
+    public void setRainList(List<Rain> rainList) {
+        this.rainList = rainList;
+    }
 
     public List<BlinkingBomb> getBlinkingBombs() {
         return blinkingBombs;
