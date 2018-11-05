@@ -26,7 +26,7 @@ public class Main {
     private static void startGame() throws IOException, InterruptedException {
         Terminal terminal = createTerminal();
         //Player player = new Player(6, 17, '\u263a');
-        Player player = new Player(9, 3, '\u263a');
+        Player player = new Player(40, 5, '\u263a');
         Dungeon dungeonOne = new Dungeon();
         List<Brick> walls = createDungeon();
         List<Bomb> bombs = createBombs();
@@ -35,6 +35,7 @@ public class Main {
         List<MovingWallNode> movingWall1 = createMovingWall();
         List<Rain> rainList = createRain();
         List<MovingWallHole> wallHoles = createWallHole();
+        List<Fire> fires = createFire();
         Finish finish = new Finish(70, 5);
 
         createDoors(walls);
@@ -47,6 +48,7 @@ public class Main {
         dungeonOne.setRainList(rainList);
         dungeonOne.setMovingWallHole(wallHoles);
         dungeonOne.setFinish(finish);
+        dungeonOne.setFires(fires);
 
         drawCharacters(terminal, player, dungeonOne);
 
@@ -106,6 +108,27 @@ public class Main {
         return list;
     }
 
+    private static List<Fire> createFire(){
+        List<Fire> fires = new ArrayList<>();
+        fires.add(new Fire(42,4));
+        fires.add(new Fire(42,5));
+        fires.add(new Fire(42,6));
+        fires.add(new Fire(44,3));
+        fires.add(new Fire(44,4));
+        fires.add(new Fire(44,6));
+        fires.add(new Fire(44,7));
+        fires.add(new Fire(46,4));
+        fires.add(new Fire(46,5));
+        fires.add(new Fire(46,6));
+        fires.add(new Fire(46,7));
+        fires.add(new Fire(48,3));
+        fires.add(new Fire(48,4));
+        fires.add(new Fire(48,5));
+        fires.add(new Fire(48,6));
+
+        return  fires;
+    }
+
     private static List<Bomb> createBombs() {
         List<Bomb> bombs = new ArrayList<>();
         bombs.add(new Bomb(13, 16));
@@ -159,6 +182,7 @@ public class Main {
         bombs.add(new Bomb(11, 4));
         bombs.add(new Bomb(12, 4));
         bombs.add(new Bomb(13, 4));
+
 
 
         return bombs;
@@ -309,6 +333,11 @@ public class Main {
         wallList.add(new Brick(40, 6));
         wallList.add(new Brick(40, 7));
 
+        wallList.add(new Brick(50,3));
+        wallList.add(new Brick(50,4));
+        wallList.add(new Brick(50,6));
+        wallList.add(new Brick(50,7));
+
 
         return wallList;
 
@@ -361,6 +390,7 @@ public class Main {
         for (MovingWallHole mvh : dungeon.getMovingWallHole()) {
             mvh.moveLeft();
         }
+
     }
 
     private static void movePlayer(Player player, KeyStroke keyStroke, List<Brick> dungeon) {
@@ -508,6 +538,12 @@ public class Main {
             terminal.putCharacter(mvh.getSymbol());
         }
 
+        terminal.setForegroundColor(TextColor.ANSI.RED);
+        for (Fire fire : dungeon.getFires()) {
+            terminal.setCursorPosition(fire.getX(), fire.getY());
+            terminal.putCharacter(fire.getSymbol());
+        }
+
         terminal.setForegroundColor(TextColor.ANSI.YELLOW);
         terminal.setCursorPosition(dungeon.getFinish().getX(), dungeon.getFinish().getY());
         terminal.putCharacter(dungeon.getFinish().getSymbol());
@@ -558,12 +594,18 @@ public class Main {
                 return true;
             }
         }
+
+        for (Fire fire : dungeon.getFires()){
+            if (player.getX() == fire.getX() && player.getY() == fire.getY()){
+                return true;
+            }
+        }
         return false;
     }
 
     private static void drawFinish(Terminal terminal) throws  IOException {
         terminal.clearScreen();
-       
+
         terminal.setForegroundColor(TextColor.ANSI.YELLOW);
         terminal.setCursorPosition(33, 10);
         terminal.putCharacter('S');
