@@ -1,3 +1,4 @@
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -34,6 +35,7 @@ public class Main {
         List<MovingWallNode> movingWall1 = createMovingWall();
         List<Rain> rainList = createRain();
         List<MovingWallHole> wallHoles = createWallHole();
+        Finish finish = new Finish(70, 5);
 
         createDoors(walls);
 
@@ -44,6 +46,7 @@ public class Main {
         dungeonOne.setBlinkingBombs(blinkingBombs);
         dungeonOne.setRainList(rainList);
         dungeonOne.setMovingWallHole(wallHoles);
+        dungeonOne.setFinish(finish);
 
         drawCharacters(terminal, player, dungeonOne);
 
@@ -53,10 +56,16 @@ public class Main {
             movePlayer(player, keyStroke, walls);
             moveObjects(dungeonOne);
             drawCharacters(terminal, player, dungeonOne);
-
+            if (isPlayerAtFinish(player, dungeonOne)){
+                break;
+            }
 
         } while (!isPlayerDead(player, dungeonOne));
-        drawGameOver(terminal);
+        if (isPlayerAtFinish(player, dungeonOne)){
+            drawFinish(terminal);
+        } else {
+            drawGameOver(terminal);
+        }
     }
 
     private static List<BlinkingBomb> createBlinknigBombs() {
@@ -87,12 +96,12 @@ public class Main {
         list.add(new BlinkingBomb(74, 11));
         list.add(new BlinkingBomb(75, 9));
 
-        list.add(new BlinkingBomb(10,5));
-        list.add(new BlinkingBomb(8,5));
-        list.add(new BlinkingBomb(6,3));
-        list.add(new BlinkingBomb(8,3));
-        list.add(new BlinkingBomb(10,3));
-        list.add(new BlinkingBomb(12,3));
+        list.add(new BlinkingBomb(10, 5));
+        list.add(new BlinkingBomb(8, 5));
+        list.add(new BlinkingBomb(6, 3));
+        list.add(new BlinkingBomb(8, 3));
+        list.add(new BlinkingBomb(10, 3));
+        list.add(new BlinkingBomb(12, 3));
 
         return list;
     }
@@ -127,30 +136,29 @@ public class Main {
         bombs.add(new Bomb(26, 15));
         bombs.add(new Bomb(26, 16));
         bombs.add(new Bomb(26, 17));
-        bombs.add(new Bomb(26, 18)); 
+        bombs.add(new Bomb(26, 18));
         bombs.add(new Bomb(29, 18));
 
         //bombs.add(new Bomb(12,6));
-        bombs.add(new Bomb(11,6));
-        bombs.add(new Bomb(10,6));
-        bombs.add(new Bomb(9,6));
-        bombs.add(new Bomb(8,6));
-        bombs.add(new Bomb(8,7));
+        bombs.add(new Bomb(11, 6));
+        bombs.add(new Bomb(10, 6));
+        bombs.add(new Bomb(9, 6));
+        bombs.add(new Bomb(8, 6));
+        bombs.add(new Bomb(8, 7));
 
-       // bombs.add(new Bomb(6,6));
-        bombs.add(new Bomb(5,6));
-        bombs.add(new Bomb(5,5));
-        bombs.add(new Bomb(5,4));
+        // bombs.add(new Bomb(6,6));
+        bombs.add(new Bomb(5, 6));
+        bombs.add(new Bomb(5, 5));
+        bombs.add(new Bomb(5, 4));
 
-        bombs.add(new Bomb(6,4));
-        bombs.add(new Bomb(7,4));
-        bombs.add(new Bomb(8,4));
-        bombs.add(new Bomb(9,4));
-        bombs.add(new Bomb(10,4));
-        bombs.add(new Bomb(11,4));
-        bombs.add(new Bomb(12,4));
-        bombs.add(new Bomb(13,4));
-
+        bombs.add(new Bomb(6, 4));
+        bombs.add(new Bomb(7, 4));
+        bombs.add(new Bomb(8, 4));
+        bombs.add(new Bomb(9, 4));
+        bombs.add(new Bomb(10, 4));
+        bombs.add(new Bomb(11, 4));
+        bombs.add(new Bomb(12, 4));
+        bombs.add(new Bomb(13, 4));
 
 
         return bombs;
@@ -161,8 +169,8 @@ public class Main {
         list.add(new RandomMob(60, 17));
         list.add(new RandomMob(70, 19));
         list.add(new RandomMob(55, 16));
-        list.add(new RandomMob(7,12));
-        list.add(new RandomMob(25,12));
+        list.add(new RandomMob(7, 12));
+        list.add(new RandomMob(25, 12));
         return list;
     }
 
@@ -199,45 +207,45 @@ public class Main {
     private static List<Rain> createRain() {
         List<Rain> rainList = new ArrayList<>();
         rainList.add(new Rain(33, 9));
-        rainList.add(new Rain( 36, 11));
-        rainList.add(new Rain(39,12));
+        rainList.add(new Rain(36, 11));
+        rainList.add(new Rain(39, 12));
         rainList.add(new Rain(43, 9));
         rainList.add(new Rain(46, 10));
-        rainList.add(new Rain(50,12));
-        rainList.add(new Rain(53,11));
-        rainList.add(new Rain(57,9));
-        rainList.add(new Rain(59,12));
+        rainList.add(new Rain(50, 12));
+        rainList.add(new Rain(53, 11));
+        rainList.add(new Rain(57, 9));
+        rainList.add(new Rain(59, 12));
 
 
         return rainList;
     }
 
-    private static List<MovingWallHole> createWallHole(){
+    private static List<MovingWallHole> createWallHole() {
         List<MovingWallHole> wallHoles = new ArrayList<>();
-        wallHoles.add(new MovingWallHole(39,3));
-        wallHoles.add(new MovingWallHole(39,4));
-        wallHoles.add(new MovingWallHole(39,6));
-        wallHoles.add(new MovingWallHole(39,7));
+        wallHoles.add(new MovingWallHole(39, 3));
+        wallHoles.add(new MovingWallHole(39, 4));
+        wallHoles.add(new MovingWallHole(39, 6));
+        wallHoles.add(new MovingWallHole(39, 7));
 
-        wallHoles.add(new MovingWallHole(35,4));
-        wallHoles.add(new MovingWallHole(35,5));
-        wallHoles.add(new MovingWallHole(35,6));
-        wallHoles.add(new MovingWallHole(35,7));
+        wallHoles.add(new MovingWallHole(35, 4));
+        wallHoles.add(new MovingWallHole(35, 5));
+        wallHoles.add(new MovingWallHole(35, 6));
+        wallHoles.add(new MovingWallHole(35, 7));
 
-        wallHoles.add(new MovingWallHole(30,3));
-        wallHoles.add(new MovingWallHole(30,5));
-        wallHoles.add(new MovingWallHole(30,6));
-        wallHoles.add(new MovingWallHole(30,7));
+        wallHoles.add(new MovingWallHole(30, 3));
+        wallHoles.add(new MovingWallHole(30, 5));
+        wallHoles.add(new MovingWallHole(30, 6));
+        wallHoles.add(new MovingWallHole(30, 7));
 
-        wallHoles.add(new MovingWallHole(25,3));
-        wallHoles.add(new MovingWallHole(25,4));
-        wallHoles.add(new MovingWallHole(25,5));
-        wallHoles.add(new MovingWallHole(25,6));
+        wallHoles.add(new MovingWallHole(25, 3));
+        wallHoles.add(new MovingWallHole(25, 4));
+        wallHoles.add(new MovingWallHole(25, 5));
+        wallHoles.add(new MovingWallHole(25, 6));
 
-        wallHoles.add(new MovingWallHole(19,3));
-        wallHoles.add(new MovingWallHole(19,5));
-        wallHoles.add(new MovingWallHole(19,6));
-        wallHoles.add(new MovingWallHole(19,7));
+        wallHoles.add(new MovingWallHole(19, 3));
+        wallHoles.add(new MovingWallHole(19, 5));
+        wallHoles.add(new MovingWallHole(19, 6));
+        wallHoles.add(new MovingWallHole(19, 7));
         return wallHoles;
     }
 
@@ -302,7 +310,6 @@ public class Main {
         wallList.add(new Brick(40, 7));
 
 
-
         return wallList;
 
     }
@@ -351,7 +358,7 @@ public class Main {
 
         }
 
-        for (MovingWallHole mvh : dungeon.getMovingWallHole()){
+        for (MovingWallHole mvh : dungeon.getMovingWallHole()) {
             mvh.moveLeft();
         }
     }
@@ -399,39 +406,38 @@ public class Main {
 
     private static void drawCharacters(Terminal terminal, Player player, Dungeon dungeon) throws IOException {
 
-        terminal.setCursorPosition(30,1);
+        terminal.setCursorPosition(30, 1);
         terminal.putCharacter('E');
-        terminal.setCursorPosition(31,1);
+        terminal.setCursorPosition(31, 1);
         terminal.putCharacter('P');
-        terminal.setCursorPosition(32,1);
+        terminal.setCursorPosition(32, 1);
         terminal.putCharacter('I');
-        terminal.setCursorPosition(33,1);
+        terminal.setCursorPosition(33, 1);
         terminal.putCharacter('C');
-        terminal.setCursorPosition(35,1);
+        terminal.setCursorPosition(35, 1);
         terminal.putCharacter('D');
-        terminal.setCursorPosition(36,1);
+        terminal.setCursorPosition(36, 1);
         terminal.putCharacter('U');
-        terminal.setCursorPosition(37,1);
+        terminal.setCursorPosition(37, 1);
         terminal.putCharacter('N');
-        terminal.setCursorPosition(38,1);
+        terminal.setCursorPosition(38, 1);
         terminal.putCharacter('G');
-        terminal.setCursorPosition(39,1);
+        terminal.setCursorPosition(39, 1);
         terminal.putCharacter('E');
-        terminal.setCursorPosition(40,1);
+        terminal.setCursorPosition(40, 1);
         terminal.putCharacter('O');
-        terminal.setCursorPosition(41,1);
+        terminal.setCursorPosition(41, 1);
         terminal.putCharacter('N');
-        terminal.setCursorPosition(38,1);
+        terminal.setCursorPosition(38, 1);
 
 
-
-
+        terminal.setForegroundColor(TextColor.ANSI.WHITE);
         terminal.setCursorPosition(player.getPreviousX(), player.getPreviousY());
         terminal.putCharacter(' ');
 
         terminal.setCursorPosition(player.getX(), player.getY());
         terminal.putCharacter(player.getSymbol());
-
+        terminal.setForegroundColor(TextColor.ANSI.GREEN);
         for (BlinkingBomb blinkingBomb : dungeon.getBlinkingBombs()) {
             if (blinkingBomb.isVisible()) {
                 terminal.setCursorPosition(blinkingBomb.getX(), blinkingBomb.getY());
@@ -443,16 +449,19 @@ public class Main {
 
         }
 
+        terminal.setForegroundColor(TextColor.ANSI.BLUE);
         for (Brick brick : dungeon.getWalls()) {
             terminal.setCursorPosition(brick.getX(), brick.getY());
             terminal.putCharacter(brick.getSymbol());
         }
 
+        terminal.setForegroundColor(TextColor.ANSI.GREEN);
         for (Bomb bomb : dungeon.getBombs()) {
             terminal.setCursorPosition(bomb.getX(), bomb.getY());
             terminal.putCharacter(bomb.getSymbol());
         }
 
+        terminal.setForegroundColor(TextColor.ANSI.CYAN);
         for (MovingWallNode mvn : dungeon.getMovingWall()) {
             terminal.setCursorPosition(mvn.getPreviousX(), mvn.getPreviousY());
             terminal.putCharacter(' ');
@@ -460,7 +469,7 @@ public class Main {
             terminal.setCursorPosition(mvn.getX(), mvn.getY());
             terminal.putCharacter(mvn.getSymbol());
         }
-
+        terminal.setForegroundColor(TextColor.ANSI.MAGENTA);
         for (RandomMob rm : dungeon.getRandomMobs()) {
             if (rm.getPreviousX() == player.getX() && rm.getPreviousY() == player.getY()) {
 
@@ -473,6 +482,7 @@ public class Main {
             terminal.putCharacter(rm.getSymbol());
         }
 
+        terminal.setForegroundColor(TextColor.ANSI.YELLOW);
         for (Rain rain : dungeon.getRainList()) {
             if (rain.getPreviousX() == player.getX() && rain.getPreviousY() == player.getY()) {
 
@@ -485,6 +495,7 @@ public class Main {
             terminal.putCharacter(rain.getSymbol());
         }
 
+        terminal.setForegroundColor(TextColor.ANSI.CYAN);
         for (MovingWallHole mvh : dungeon.getMovingWallHole()) {
             if (mvh.getPreviousX() == player.getX() && mvh.getPreviousY() == player.getY()) {
 
@@ -497,8 +508,18 @@ public class Main {
             terminal.putCharacter(mvh.getSymbol());
         }
 
+        terminal.setForegroundColor(TextColor.ANSI.YELLOW);
+        terminal.setCursorPosition(dungeon.getFinish().getX(), dungeon.getFinish().getY());
+        terminal.putCharacter(dungeon.getFinish().getSymbol());
 
         terminal.flush();
+    }
+
+    private static boolean isPlayerAtFinish(Player player, Dungeon dungeon) {
+        if (player.getX() == dungeon.getFinish().getX() && player.getY() == dungeon.getFinish().getY()) {
+            return true;
+        }
+        return false;
     }
 
     private static boolean isPlayerDead(Player player, Dungeon dungeon) {
@@ -526,18 +547,56 @@ public class Main {
             }
         }
 
-        for (Rain rain : dungeon.getRainList()){
+        for (Rain rain : dungeon.getRainList()) {
             if (player.getX() == rain.getX() && player.getY() == rain.getY()) {
                 return true;
             }
         }
 
-        for (MovingWallHole mvh : dungeon.getMovingWallHole()){
+        for (MovingWallHole mvh : dungeon.getMovingWallHole()) {
             if (player.getX() == mvh.getX() && player.getY() == mvh.getY()) {
                 return true;
             }
         }
         return false;
+    }
+
+    private static void drawFinish(Terminal terminal) throws  IOException {
+        terminal.clearScreen();
+       
+        terminal.setForegroundColor(TextColor.ANSI.YELLOW);
+        terminal.setCursorPosition(33, 10);
+        terminal.putCharacter('S');
+        terminal.setForegroundColor(TextColor.ANSI.RED);
+        terminal.setCursorPosition(34, 10);
+        terminal.putCharacter('T');
+        terminal.setForegroundColor(TextColor.ANSI.MAGENTA);
+        terminal.setCursorPosition(35, 10);
+        terminal.putCharacter('A');
+        terminal.setForegroundColor(TextColor.ANSI.BLUE);
+        terminal.setCursorPosition(36, 10);
+        terminal.putCharacter('G');
+        terminal.setForegroundColor(TextColor.ANSI.CYAN);
+
+        terminal.setCursorPosition(37, 10);
+        terminal.putCharacter('E');
+
+        terminal.setForegroundColor(TextColor.ANSI.GREEN);
+        terminal.setCursorPosition(39, 10);
+        terminal.putCharacter('C');
+        terminal.setForegroundColor(TextColor.ANSI.YELLOW);
+        terminal.setCursorPosition(40, 10);
+        terminal.putCharacter('L');
+        terminal.setForegroundColor(TextColor.ANSI.RED);
+        terminal.setCursorPosition(41, 10);
+        terminal.putCharacter('E');
+        terminal.setForegroundColor(TextColor.ANSI.MAGENTA);
+        terminal.setCursorPosition(42, 10);
+        terminal.putCharacter('A');
+        terminal.setForegroundColor(TextColor.ANSI.BLUE);
+        terminal.setCursorPosition(43, 10);
+        terminal.putCharacter('R');
+        terminal.flush();
     }
 
     private static void drawGameOver(Terminal terminal) throws IOException {

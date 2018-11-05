@@ -9,7 +9,16 @@ public class Dungeon {
     private List<BlinkingBomb> blinkingBombs = new ArrayList<>();
     private List<Rain> rainList = new ArrayList<>();
     private List<MovingWallHole> movingWallHole = new ArrayList<>();
+    private Finish finish;
     private String name;
+
+    public Finish getFinish() {
+        return finish;
+    }
+
+    public void setFinish(Finish finish) {
+        this.finish = finish;
+    }
 
     public List<MovingWallHole> getMovingWallHole() {
         return movingWallHole;
