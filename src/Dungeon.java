@@ -10,8 +10,17 @@ public class Dungeon {
     private List<Rain> rainList = new ArrayList<>();
     private List<MovingWallHole> movingWallHole = new ArrayList<>();
     private List<Fire> fires = new ArrayList<>();
+    private List<Skull> skulls = new ArrayList<>();
     private Finish finish;
     private String name;
+
+    public List<Skull> getSkulls() {
+        return skulls;
+    }
+
+    public void setSkulls(List<Skull> skulls) {
+        this.skulls = skulls;
+    }
 
     public List<Fire> getFires() {
         return fires;

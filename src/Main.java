@@ -36,7 +36,8 @@ public class Main {
         List<Rain> rainList = createRain();
         List<MovingWallHole> wallHoles = createWallHole();
         List<Fire> fires = createFire();
-        Finish finish = new Finish(70, 5);
+        List<Skull> skulls = createSkulls();
+        Finish finish = new Finish(72, 5);
 
         createDoors(walls);
 
@@ -49,6 +50,7 @@ public class Main {
         dungeonOne.setMovingWallHole(wallHoles);
         dungeonOne.setFinish(finish);
         dungeonOne.setFires(fires);
+        dungeonOne.setSkulls(skulls);
 
         drawCharacters(terminal, player, dungeonOne);
 
@@ -244,6 +246,12 @@ public class Main {
         return rainList;
     }
 
+    private static List<Skull> createSkulls(){
+        List<Skull> skulls = new ArrayList<>();
+        skulls.add(new Skull(62,5));
+        return skulls;
+    }
+
     private static List<MovingWallHole> createWallHole() {
         List<MovingWallHole> wallHoles = new ArrayList<>();
         wallHoles.add(new MovingWallHole(39, 3));
@@ -338,6 +346,11 @@ public class Main {
         wallList.add(new Brick(50,6));
         wallList.add(new Brick(50,7));
 
+        wallList.add(new Brick(68,3));
+        wallList.add(new Brick(68,4));
+        wallList.add(new Brick(68,6));
+        wallList.add(new Brick(68,7));
+
 
         return wallList;
 
@@ -384,7 +397,10 @@ public class Main {
 
         for (Rain rain : dungeon.getRainList()) {
             rain.moveDown();
+        }
 
+        for (Skull skull : dungeon.getSkulls()) {
+            skull.move(1);
         }
 
         for (MovingWallHole mvh : dungeon.getMovingWallHole()) {
@@ -435,7 +451,7 @@ public class Main {
     }
 
     private static void drawCharacters(Terminal terminal, Player player, Dungeon dungeon) throws IOException {
-
+        terminal.setForegroundColor(TextColor.ANSI.WHITE);
         terminal.setCursorPosition(30, 1);
         terminal.putCharacter('E');
         terminal.setCursorPosition(31, 1);
@@ -512,6 +528,7 @@ public class Main {
             terminal.putCharacter(rm.getSymbol());
         }
 
+
         terminal.setForegroundColor(TextColor.ANSI.YELLOW);
         for (Rain rain : dungeon.getRainList()) {
             if (rain.getPreviousX() == player.getX() && rain.getPreviousY() == player.getY()) {
@@ -547,6 +564,18 @@ public class Main {
         terminal.setForegroundColor(TextColor.ANSI.YELLOW);
         terminal.setCursorPosition(dungeon.getFinish().getX(), dungeon.getFinish().getY());
         terminal.putCharacter(dungeon.getFinish().getSymbol());
+
+        for (Skull skull : dungeon.getSkulls()){
+            if (skull.getPreviousX() == player.getX() && skull.getPreviousY() == player.getY()) {
+            } else {
+                terminal.setCursorPosition(skull.getPreviousX(), skull.getPreviousY());
+                terminal.putCharacter(' ');
+            }
+
+            terminal.setCursorPosition(skull.getX(), skull.getY());
+            terminal.putCharacter(skull.getSymbol());
+        }
+
 
         terminal.flush();
     }
