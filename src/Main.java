@@ -25,8 +25,8 @@ public class Main {
 
     private static void startGame() throws IOException, InterruptedException {
         Terminal terminal = createTerminal();
-        //Player player = new Player(6, 17, '\u263a');
-        Player player = new Player(40, 5, '\u263a');
+        Player player = new Player(6, 17, '\u263a');
+        //Player player = new Player(40, 5, '\u263a');
         Dungeon dungeonOne = new Dungeon();
         List<Brick> walls = createDungeon();
         List<Bomb> bombs = createBombs();
@@ -248,7 +248,11 @@ public class Main {
 
     private static List<Skull> createSkulls(){
         List<Skull> skulls = new ArrayList<>();
-        skulls.add(new Skull(62,5));
+        skulls.add(new Skull(52,3));
+        skulls.add(new Skull(56,6));
+        skulls.add(new Skull(58,3));
+        skulls.add(new Skull(62,7));
+        skulls.add(new Skull(64,5));
         return skulls;
     }
 
@@ -400,7 +404,7 @@ public class Main {
         }
 
         for (Skull skull : dungeon.getSkulls()) {
-            skull.move(1);
+            skull.move();
         }
 
         for (MovingWallHole mvh : dungeon.getMovingWallHole()) {
@@ -626,6 +630,12 @@ public class Main {
 
         for (Fire fire : dungeon.getFires()){
             if (player.getX() == fire.getX() && player.getY() == fire.getY()){
+                return true;
+            }
+        }
+
+        for (Skull skull : dungeon.getSkulls()) {
+            if (player.getX() == skull.getX() && player.getY() == skull.getY()){
                 return true;
             }
         }
